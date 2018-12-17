@@ -1,0 +1,23 @@
+map $sent_http_content_type $expires {
+    default                    off;
+   text/html                  epoch;
+    text/css                   max;
+    application/javascript     max;
+    ~image/                    max;
+}
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	expires $expires;
+
+	root /var/www/html;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
